@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
-    @Query("SELECT * FROM WORKER WHERE h3Index IN :h3Indexes")
-    List<Worker> findWorkerByH3Index(@Param("h3Indexes") List<Long> h3Indexes);
+    @Query("SELECT w FROM Worker w JOIN w.categories c WHERE c.categoryId = :categoryId AND w.h3Index IN :h3Indexes" )
+    List<Worker> findWorkerByH3Index(@Param("categoryId") Long categoryId, @Param("h3Indexes") List<Long> h3Indexes);
+
+    Worker findByWorkerId(Long workerId);
 }

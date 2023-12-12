@@ -13,8 +13,6 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "category")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +25,5 @@ public class Category {
     private Instant updatedOn;
 
     @ManyToMany(mappedBy = "categories")
-    private Set<Worker> workers = new HashSet<>();
+    private Set<Worker> workers;
 }
