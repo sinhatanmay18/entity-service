@@ -1,28 +1,28 @@
 package com.ibuc.entityService.service;
 
 import com.ibuc.entityService.entity.Category;
-import com.ibuc.entityService.repository.BookingRepository;
+import com.ibuc.entityService.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class BookingService {
+public class CategoryService {
 
     @Autowired
-    private BookingRepository bookingRepository;
+    private CategoryRepository categoryRepository;
     public List<Category> saveCategory(List<Category> categories) {
-        return this.bookingRepository.saveAll(categories);
+        return this.categoryRepository.saveAll(categories);
     }
 
     public List<Category> showAllCategory(){
-        return bookingRepository.findAll();
+        return categoryRepository.findAll();
     }
 
     public Category findCategoryById(Long categoryId){
-        return bookingRepository.findByCategoryId(categoryId);
+        return categoryRepository.findByCategoryId(categoryId);
     }
 
-    public void deleteCategoryById(Long categoryId) { bookingRepository.deleteById(categoryId);}
+    public void deleteCategoryById(Long categoryId) { categoryRepository.deleteById(categoryId);}
 }

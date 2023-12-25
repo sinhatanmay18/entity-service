@@ -1,5 +1,6 @@
 package com.ibuc.entityService.controller;
 
+import com.ibuc.entityService.entity.TimeSlot;
 import com.ibuc.entityService.entity.Worker;
 import com.ibuc.entityService.model.WorkerLocationRequest;
 import com.ibuc.entityService.model.WorkerRequest;
@@ -26,13 +27,17 @@ public class WorkerController {
 
     @PostMapping("/saveWorker")
     public Worker saveWorker(@RequestBody WorkerRequest worker){
-        log.info("Worker saved inside worker service");
-        return workerService.saveWorker(worker);
+        return this.workerService.saveWorker(worker);
     }
 
     @GetMapping("/{id}")
     public Worker findWorkerById(@PathVariable("id") Long workerId){
         log.info("inside worker service");
-        return workerService.findDepartmentById(workerId);
+        return this.workerService.findWorkerById(workerId);
+    }
+
+    @GetMapping("/{workerId}/timeslots")
+    public List<TimeSlot> getAvailableTimeSlots(@PathVariable Long workerId) {
+        return this.workerService.getAvailableTimeSlotsForWorker(workerId);
     }
 }

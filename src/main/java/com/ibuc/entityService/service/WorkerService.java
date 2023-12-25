@@ -1,9 +1,11 @@
 package com.ibuc.entityService.service;
 
+import com.ibuc.entityService.entity.TimeSlot;
 import com.ibuc.entityService.entity.Worker;
 import com.ibuc.entityService.model.WorkerLocationRequest;
 import com.ibuc.entityService.model.WorkerRequest;
-import com.ibuc.entityService.repository.BookingRepository;
+import com.ibuc.entityService.repository.CategoryRepository;
+import com.ibuc.entityService.repository.TimeSlotRepository;
 import com.ibuc.entityService.repository.WorkerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,29 +22,35 @@ public class WorkerService {
     private WorkerRepository workerRepository;
 
     @Autowired
-    private BookingRepository bookingRepository;
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private TimeSlotRepository timeSlotRepository;
 
     public List<Worker> getWorkersByH3Index(WorkerLocationRequest workerLocationRequest){
         return this.workerRepository.findWorkerByH3Index(workerLocationRequest.getCategoryId(), workerLocationRequest.getH3Indexes());
     }
-    public Worker findDepartmentById(Long workerId) {
-        log.info("Save Worker in worker service");
+    public Worker findWorkerById(Long workerId) {
         return this.workerRepository.findByWorkerId(workerId);
     }
+
     public Worker saveWorker(WorkerRequest workerRequest) {
-        log.info("Save Worker in worker service");
         Worker worker = this.mapWorkerRequestToWorkerEntity(workerRequest);
         return this.workerRepository.save(worker);
+    }
+
+    public List<TimeSlot> getAvailableTimeSlotsForWorker(Long workerId) {
+        return timeSlotRepository.findByWorkerWorkerIdAndIsBooked(workerId, false);
     }
 
     private Worker mapWorkerRequestToWorkerEntity(WorkerRequest workerRequest) {
         Worker worker = new Worker();
         worker.setWorkerName(workerRequest.getWorkerName());
-        worker.setAge(worker.getAge());
+        worker.setAge(workerRequest.getAge());
         worker.setPhoneNumber(workerRequest.getPhoneNumber());
-        worker.setAvailability_status(workerRequest.isAvailabilityStatus());
+        worker.setAvailabilityStatus(workerRequest.isAvailabilityStatus());
         worker.setH3Index(workerRequest.getH3Index());
-        worker.setCategories(Set.of(this.bookingRepository.findByCategoryId(workerRequest.getCategoryId())));
+        worker.setCategories(Set.of(this.categoryRepository.findByCategoryId(workerRequest.getCategoryId())));
 
         return worker;
     }

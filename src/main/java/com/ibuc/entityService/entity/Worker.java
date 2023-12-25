@@ -1,9 +1,7 @@
 package com.ibuc.entityService.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
@@ -20,7 +18,7 @@ public class Worker {
     private String workerName;
     private int age;
     private Long phoneNumber;
-    private boolean availability_status;
+    private boolean availabilityStatus;
     private Long h3Index;
 
     @ManyToMany
@@ -33,5 +31,8 @@ public class Worker {
 
     @OneToMany(mappedBy = "worker")
     private Set<TimeSlot> timeSlots;
+
+    @OneToMany(mappedBy = "worker")
+    private Set<Booking> bookings;
 
 }
